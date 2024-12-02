@@ -1,7 +1,7 @@
 from risk_visualizer import RiskVisualizer
 import pandas as pd
 
-# Example data (Replace this with actual daily_returns from your project)
+
 # Load or mock daily returns DataFrame
 daily_returns = pd.DataFrame({
     "AAPL": [0.01, -0.02, 0.03, 0.04],
