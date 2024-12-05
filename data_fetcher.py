@@ -6,9 +6,8 @@ class DataFetcher:
         self.tickers = tickers
 
     def get_data(self):
-      
-       # Fetch historical daily returns for the specified tickers.
-       
+        
+        #fetch historical daily returns for the specified tickers
         data = yf.download(self.tickers, period="1y", interval="1d", group_by='ticker', auto_adjust=True)
         close_prices = data.loc[:, (slice(None), "Close")]
         daily_returns = close_prices.pct_change().dropna()
