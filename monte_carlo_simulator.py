@@ -8,9 +8,10 @@ class MonteCarloSimulator:
         self.portfolio_returns = (self.daily_returns * self.weights).sum(axis=1)
 
     def simulate(self, num_simulations, time_horizon):
-        """
-        Run Monte Carlo simulations for the portfolio over the specified time horizon.
-        """
+        
+        # run monte carlo simulations for the portfolio over the specified time horizon.
+      
+        np.random.seed(42)  # set seed for reproducibility
         simulated_values = np.zeros((time_horizon, num_simulations))
 
         for i in range(num_simulations):
