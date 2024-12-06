@@ -11,15 +11,15 @@ import numpy as np
 
 # Define save_results function
 def save_results(date, var_95, cvar_95, sharpe_ratio, initial_investment, portfolio_returns, num_simulations):
-    """
-    Save simulation results to a CSV file with properly aligned columns.
-    """
+  
+    # save simulation results to a CSV file with properly aligned columns.
+
     file_exists = os.path.exists("simulation_results.csv")
     
     with open("simulation_results.csv", "a", newline="") as file:
         writer = csv.writer(file)
         
-        # Write headers if the file does not exist
+        # write headers if the file does not exist
         if not file_exists:
             writer.writerow([
                 "Date", 
@@ -31,7 +31,6 @@ def save_results(date, var_95, cvar_95, sharpe_ratio, initial_investment, portfo
                 "Simulations"
             ])
         
-        # Write the data row
         writer.writerow([
             date, 
             f"${var_95:.2f}", 
@@ -43,15 +42,8 @@ def save_results(date, var_95, cvar_95, sharpe_ratio, initial_investment, portfo
         ])
 
 def optimize_portfolio(daily_returns):
-    """
-    Optimize portfolio weights using mean-variance optimization.
-
-    Parameters:
-        daily_returns (pd.DataFrame): Daily returns of the portfolio.
-
-    Returns:
-        list: Optimized weights for the portfolio.
-    """
+  
+    # optimize portfolio weights using mean-variance optimization
     num_assets = daily_returns.shape[1]
     mean_returns = daily_returns.mean()
     cov_matrix = daily_returns.cov()
@@ -98,16 +90,16 @@ def optimize_portfolio(daily_returns):
 
 # Define run_simulation
 def run_simulation():
-    """
-    Fetch data, run Monte Carlo simulations, calculate risk metrics, and save results.
-    """
+    
+    # fetch data, run Monte Carlo simulations, calculate risk metrics, and save results.
+    
     print("Starting Monte Carlo Simulation...")
     tickers = ["AAPL", "BSX", "CAT", "DVA", "EMN", "FDX", "GRMN",
                "HLT", "IBM", "JBL", "LLY", "MAR", "^GSPC"]
     fetcher = DataFetcher(tickers)
     close_prices, daily_returns = fetcher.get_data()
 
-    # Optimize weights using historical returns
+    # optimize weights using historical returns
     weights = optimize_portfolio(daily_returns.iloc[:, :-1])  # Exclude the S&P 500 (^GSPC) for weight calculation
 
     initial_investment = 10000
@@ -123,7 +115,7 @@ def run_simulation():
     print(f"Conditional Value at Risk (CVaR) at 95% confidence: ${cvar_95:.2f}")
     print(f"Sharpe Ratio: {sharpe_ratio:.2f}")
 
-    # Save results to CSV
+    # save results to CSV
     save_results(
         datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         var_95, 
@@ -134,12 +126,12 @@ def run_simulation():
         1000  # Number of simulations
     )
 
-    # Plot results
+    # plot results
     plot_simulation(simulated_values, var_95)
     plot_final_value_histogram(simulated_values, var_95)
     plot_portfolio_vs_benchmark(simulator.portfolio_returns, daily_returns["^GSPC"])
 
-# Plotting functions
+# plotting functions
 def plot_simulation(simulated_values, var_95):
     days = range(simulated_values.shape[0])
     plt.figure(figsize=(12, 6))
@@ -174,7 +166,7 @@ def plot_portfolio_vs_benchmark(portfolio_returns, benchmark_returns):
     plt.legend()
     plt.show()
 
-# Main execution
+# main execution
 if __name__ == "__main__":
-    np.random.seed(42)  # Ensure reproducibility
+    np.random.seed(42)  # ensure reproducibility
     run_simulation()  
